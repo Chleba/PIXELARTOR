@@ -1,0 +1,193 @@
+
+html, body { font-size:12px; /*font-size:0.86em;*/ background:#333; background:linear-gradient(#333, #666); transform: translateZ(0); padding:0; margin:0; overflow: hidden; height:100%; }
+
+* { font-family:'Helvetica'; }
+
+/**::-webkit-scrollbar { width: 10px; height:10px; background-color:#2196F3; }
+*::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
+*::-webkit-scrollbar-thumb { background-color:#333; outline: 1px solid slategrey; }
+*/
+
+*::-webkit-scrollbar { width: 10px; height:10px; background-color:#ddd; border:1px solid #2196F3; }
+*::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); }
+*::-webkit-scrollbar-thumb { background-color:#666; outline: 1px solid slategrey; border:1px solid #333; }
+
+canvas, img { padding:0; margin:0; }
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+}
+.glyphicon { position: relative; top: 1px; display: inline-block; font-family: 'Glyphicons Halflings'; font-style: normal; font-weight: normal; line-height: 1; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.glyphicon-play:before { content: "\e072"; }
+.glyphicon-pause:before { content: "\e073"; }
+.glyphicon-stop:before { content: "\e074"; }
+.glyphicon-film:before { content: "\e009"; }
+
+.switch { position: relative; display: inline-block; width: 30px !important; height: 15px !important; }
+.switch input {  opacity: 0; width: 0; height: 0; border-width:0; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; -webkit-transition: .4s; transition: .4s; }
+.slider:before { position: absolute; content: ""; height: 11px; width: 10px; left: 2px; bottom:2px; background-color: white; -webkit-transition: .4s; transition: .4s; }
+input:checked + .slider { background-color: #2196F3; }
+/*input:focus + .slider { box-shadow: 0 0 1px #2196F3; }*/
+input + .slider { box-shadow: 0 0 1px #2196F3; }
+input:checked + .slider:before { transform: translateX(16px); }
+.switcher { align-items:center; display:block; }
+
+#blocker { position: absolute; display:flex; top:0px; left:0px; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+#instructions { display:flex; width:100%; height:100%; color:#ffffff; text-align:center; cursor: pointer; align-items:center; justify-content:center; flex-direction:column; }
+
+/* -- new -- */
+.rootContainer { display:flex; flex-direction:row; justify-content:center; align-items:center; align-content:center; height:100%;}
+.leftContainer { width:220px; height:100%; background:#333; overflow:auto; position:relative; }
+.rightContainer { width:calc(100% - 220px); height:100%; background:#000; position:relative; }
+
+.module { padding:4px; border-left:4px solid #ddd; border-bottom:4px solid #666; border-top:4px solid #ddd; border-right:4px solid #666; background:#fff; }
+.module h3 { padding:0; margin:0; font-size:0.95em; font-style:italic; background:#fff; width:100%; }
+
+.view3DContainer { position:relative; height:calc(50% - 39px); background:#fff; border-bottom:1px solid #ddd; }
+.view2DContainer { position:relative; height:calc(50% - 39px); background:#fff; }
+
+.canvasContainer3D, .canvasContainer2D { height:100%; text-align:center; overflow:auto; }
+.canvasContainer3D canvas, .canvasContainer2D canvas { border:1px solid #ddd; }
+
+.animControlsContainer { height:33px; background:#fff; display:flex; justify-content:center; border-bottom:1px solid #ddd; tramn }
+.animControlsContainer button:hover { color:#fff; background:#333; }
+.animControlsContainer * { display:flex; align-items:center; /*font-size:12px;*/ }
+.animControlsContainer input[type="number"] { width:20%; }
+
+.thumbnails { overflow-x:auto; overflow-y:hidden; border-bottom:1px solid #ddd; display:flex; height:45px; min-width:100%; align-items:flex-start; background:#fff; }
+.thumbnails img { max-height:32px; border:1px solid #ddd; display:block; transition:0.3s; }
+.thumbnails img:hover, .thumbnails img.active { border:1px solid red; }
+
+.uploadLink { position:absolute; top:0; left:0; }
+span.color { padding:4px; background:#000; margin-left:2px; display:flex; border:1px solid #666; }
+
+.fileDrop { position:absolute; width:calc(100% - 20px); height:calc(100% - 20px); background-color:rgba(0, 0, 0, 0.8); top:0; left:0; z-index:99; border:10px dashed #ddd; justify-content:center; align-items:center; display:flex; flex-direction:column; }
+.fileDrop.dragover { background-color:rgba(20, 120, 20, 0.7); }
+.fileDrop label { font-size:24px; color:#ddd; font-weight:bold; }
+.fileDrop .progressBar { width:180px; height:12px; border:1px solid #666; background:#ccc; border-radius:8px; margin-top:10px; overflow:hidden; }
+.fileDrop .progressBar span { display:block; background:rgb(30, 180, 40); width:0%; height:100%; border-radius:8px; }
+
+/*.sizeControlsContainer { display:flex; flex-direction:row; flex-wrap:wrap; }*/
+.sizeControlsContainer { display:block; flex-direction:row; flex-wrap:wrap; justify-content:center; }
+.sizeControlsContainer div { background:#ddd; }
+.sizeControlsContainer .sizeContainer { padding:4px; display:flex; flex-direction:row; flex-wrap:wrap; border:1px solid #666; }
+.sizeControlsContainer .sizeContainer div { text-align:center; width:50%; }
+.sizeControlsContainer .sizeContainer div.scale { width:100%; }
+.sizeControlsContainer .sizeContainer input[type="number"] { width:4em; }
+
+.viewControlsContainer { display:flex; flex-direction:row; flex-wrap:wrap; justify-content:center; }
+.viewControlsContainer a.cameraSwitch { width:50%; margin-bottom:-1px; z-index:99; background:#fff; color:#333; display:inline-block; height:2em; text-align:center; vertical-align:center; line-height:2em; transition:0.3s; }
+.viewControlsContainer a.cameraSwitch.active { background:#ddd; color:#333; border-width:1px 1px 0 1px; border-color:#666; border-style:solid; width:calc(50% - 2px); }
+.viewControlsContainer a.cameraSwitch:hover { background:#bbb; color:#333; }
+.viewControlsContainer div { flex:1; display:flex; align-items:center; background:#ddd; justify-content:center; }
+.viewControlsContainer div label.lTitle { width:20%; margin-right:5px; text-align:center; }
+.viewControlsContainer div input[type="range"] { width:40%; }
+.viewControlsContainer div input[type="number"] { width:20%; }
+.viewControlsContainer .controlsContainer div label { text-align:right; width:30%; }
+.viewControlsContainer .controlsContainer { display:block; border:1px solid #666; z-index:66; }
+.viewControlsContainer .controlsContainer div.row { align-items:center; justify-content:center; }
+
+.groundControlsContainer { display:flex; flex-direction:column; flex-wrap:wrap; justify-content:center; }
+.groundControlsContainer div { display:flex; background:#ddd; align-items:center; justify-content:center; }
+.groundControlsContainer div input[type="text"] { width:100%; }
+.groundControlsContainer div input[type="range"] { width:40%; }
+.groundControlsContainer div input[type="number"] { width:20%; }
+.groundControlsContainer .groundContainer { display:block; border:1px solid #666; padding:4px; }
+.groundControlsContainer .groundContainer div.switcher { display:block; justify-content:flex-start; }
+.groundControlsContainer .groundContainer div.row { align-items:center; justify-content:center; }
+/*.groundControlsContainer .groundContainer div.row label { width:20%; }*/
+.groundControlsContainer .groundContainer div label { text-align:right; width:30%; }
+.groundControlsContainer .groundContainer div span.color { width:40%; }
+
+.hemiControlsContainer {  }
+.hemiControlsContainer div { background:#ddd; }
+.hemiControlsContainer .hemiContainer { display:block; border:1px solid #666; padding:4px; }
+.hemiControlsContainer .hemiContainer div.switcher { justify-content:center; display:block; }
+.hemiControlsContainer .hemiContainer div { align-items:center; justify-content:center; display:flex; }
+.hemiControlsContainer .hemiContainer div label { text-align:right; width:30%; }
+.hemiControlsContainer .hemiContainer div span.color { width:40%; }
+.hemiControlsContainer .hemiContainer span input[type="text"] { width:100%; }
+
+.outlineControlsContainer {  }
+.outlineControlsContainer div { background:#ddd; }
+.outlineControlsContainer .outlineContainer { display:block; border:1px solid #666; padding:4px; }
+.outlineControlsContainer .outlineContainer div.switcher { justify-content:flex-start; }
+.outlineControlsContainer .outlineContainer div { align-items:center; justify-content:center; display:flex; }
+.outlineControlsContainer .outlineContainer div label { text-align:right; width:30%; }
+.outlineControlsContainer .outlineContainer div span.color { width:40%; }
+.outlineControlsContainer .outlineContainer div span.color { width:40%; }
+.outlineControlsContainer .outlineContainer span input[type="text"] { width:100%; }
+.outlineControlsContainer .outlineContainer div input[type="number"] { width:40%; }
+
+.pointControlsContainer { display:flex; flex-direction:column; flex-wrap:wrap; justify-content:center; }
+.pointControlsContainer div { flex:1; display:flex; align-items:center; background:#ddd; }
+.pointControlsContainer div span.color { width:40%; }
+.pointControlsContainer div input[type="text"] { width:100%; }
+.pointControlsContainer div input[type="range"] { width:40%; }
+.pointControlsContainer div input[type="number"] { width:20%; }
+.pointControlsContainer .pointContainer { display:block; border:1px solid #666; padding:4px; }
+.pointControlsContainer .pointContainer div { align-items:center; justify-content:center; display:flex; }
+.pointControlsContainer .pointContainer div.switcher { display:block; justify-content:flex-start; }
+.pointControlsContainer .pointContainer div label { text-align:right; width:30%; }
+.pointControlsContainer .pointContainer div span.color { width:40%; }
+.pointControlsContainer .pointContainer div.row { align-items:center; justify-content:center; }
+.pointControlsContainer .pointContainer .shadowRow { margin:4px 0; }
+
+.directControlsContainer { display:flex; flex-direction:column; flex-wrap:wrap; justify-content:center; }
+.directControlsContainer div { flex:1; display:flex; align-items:center; background:#ddd; }
+.directControlsContainer div span.color { width:40%; }
+.directControlsContainer div input[type="text"] { width:100%; }
+.directControlsContainer div input[type="range"] { width:40%; }
+.directControlsContainer div input[type="number"] { width:20%; }
+.directControlsContainer .directContainer { display:block; border:1px solid #666; padding:4px; }
+.directControlsContainer .directContainer div { align-items:center; justify-content:center; display:flex; }
+.directControlsContainer .directContainer div.switcher { display:block; justify-content:flex-start; }
+.directControlsContainer .directContainer div label { text-align:right; width:30%; }
+.directControlsContainer .directContainer div span.color { width:40%; }
+.directControlsContainer .directContainer div.row { align-items:center; justify-content:center; }
+.directControlsContainer .directContainer .shadowRow { margin:4px 0; }
+
+.exportContainer {  }
+.exportContainer input[type="text"] { width:100%; box-sizing:border-box; border:1px solid #666; margin-top:2px; }
+.exportContainer button { background:#333; color:#fff; font-weight:bold; font-size:12px; width:100%; padding:4px; transition:0.3s; }
+.exportContainer button:hover { background:#ddd; color:#333; }
+
+.radiobtn { position: relative; display: block; }
+.radiobtn label { display: block; background: #ddd; color: #444; padding: 10px 20px; border: 1px solid #666; margin-bottom: 5px; cursor: pointer; }
+.radiobtn label:after, .radiobtn label:before { content: ""; position: absolute; right: 11px; top: 8px; width: 20px; height: 20px; background: #666; }
+.radiobtn label:before { background: transparent; transition: 0.1s width cubic-bezier(0.075, 0.82, 0.165, 1) 0s, 0.3s height cubic-bezier(0.075, 0.82, 0.165, 2) 0.1s; z-index: 2; overflow: hidden; background-repeat: no-repeat; background-size: 13px; background-position: center; width: 0; height: 0;
+  background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNS4zIDEzLjIiPiAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTE0LjcuOGwtLjQtLjRhMS43IDEuNyAwIDAgMC0yLjMuMUw1LjIgOC4yIDMgNi40YTEuNyAxLjcgMCAwIDAtMi4zLjFMLjQgN2ExLjcgMS43IDAgMCAwIC4xIDIuM2wzLjggMy41YTEuNyAxLjcgMCAwIDAgMi40LS4xTDE1IDMuMWExLjcgMS43IDAgMCAwLS4yLTIuM3oiIGRhdGEtbmFtZT0iUGZhZCA0Ii8+PC9zdmc+);
+}
+.radiobtn input[type="radio"] { display: none; position: absolute; width: 100%; appearance: none; }
+.radiobtn input[type="radio"]:checked + label { background: #fdcb77; animation-name: blink; animation-duration: 1s; border-color: #fcae2c; }
+.radiobtn input[type="radio"]:checked + label:after { background: #fcae2c; }
+.radiobtn input[type="radio"]:checked + label:before { width: 20px; height: 20px; }
+@keyframes blink {
+  0% { background-color: #fdcb77; }
+  10% { background-color: #fdcb77; }
+  11% { background-color: #fdd591; }
+  29% { background-color: #fdd591; }
+  30% { background-color: #fdcb77; }
+  50% { background-color: #fdd591; }
+  45% { background-color: #fdcb77; }
+  50% { background-color: #fdd591; }
+  100% { background-color: #fdcb77; }
+}
+
+.loadOverlay { width:100vw; height:100vh; background-color:rgba(0, 0, 0, 0.75); position:absolute; top:0; left:0; z-index:999999; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+.loadOverlay .loadContainer { display:flex; justify-content:center; align-items:center; flex-direction:column; background:#000; padding:15px; border-top:5px solid #818181; border-left:5px solid #818181; border-right:5px solid #333; border-bottom:5px solid #333; }
+.loadOverlay label { font-size:12px; color:#fff; }
+.loadOverlay .progressBar { width:200px; height:10px; background-color:#999; border:1px solid #ddd; margin:5px 0; }
+.loadOverlay .progressBar .bar { width:calc(2.5% - 3px); height:calc(100% - 2px); background-color:#00ff00; border:1px solid #ddd; display:inline-block; margin:0 1px 1px 0; }
+.loadOverlay .progressBar .bar:last-child { margin-right:0!important; }
+
+.openFileContainer {  }
+.openFileContainer input[type="text"] { width:100%; box-sizing:border-box; border:1px solid #666; margin-top:2px; }
+.openFileContainer button { background:#333; color:#fff; font-weight:bold; font-size:12px; width:100%; padding:4px; transition:0.3s; }
+.openFileContainer button:hover { background:#ddd; color:#333; }
+
+.outlineControlsContainer { display:flex; flex-direction:column; }
+.outlineControlsContainer div { text-align:center; background:#ddd; margin:1px; }
