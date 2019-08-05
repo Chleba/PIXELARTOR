@@ -1,9 +1,10 @@
 # PIXELARTOR
 
-PIXELARTOR is animation tool to create 2D frame images from 3D scenes/models with or without animations. PIXELARTOR can export at the moment into gif animation image or into ZIP file with sprite images.
+PIXELARTOR is animation tool to create 2D frame images from 3D scenes/models with or without animations. Generated animation frames can be exported into gif image or ZIP file with sprites.
 PIXELATOR support only glTF file at the moment, but more formats will be added soon.
+This Tool is heavily inspired Dead Cell pipeline article on [Gamasutra website](https://www.gamasutra.com/view/news/313026/Art_Design_Deep_Dive_Using_a_3D_pipeline_for_2D_animation_in_Dead_Cells.php) and with my passion at scripting and pixelart.
 
-**NOTE**: I'll try to make monthly distributions with new features from TO-DO list below.
+**NOTE**: I'll try to make monthly distributions with new features and fixes from TO-DO list below.
 
 <p align="center">
 	<img src="./screenshots/img1.gif"/>
@@ -66,6 +67,7 @@ Also feel free to contact me and suggest some missing feature you would like me 
 There are some features that I am looking to implement:
  - fixing cameras position controls
  - add more supported 3D formats
+ - generating normal map textures
  - loading videos
  - selecting range of generated frames
  - fixing lights and shadow
