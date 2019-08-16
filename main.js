@@ -31,8 +31,8 @@ MainApp.prototype = {
 
 	makeMainWindow : function(){
 		this.mainWindow = new BrowserWindow({
-			width 					: 800,
-			height					: 600,
+			width 					: 1024,
+			height					: 768,
 			minWidth 				: 800,
 			minHeight				: 600,
 			resizable 			: true,
@@ -49,7 +49,7 @@ MainApp.prototype = {
 			protocol: 'file:',
 			slashes: true
 		}));
-		this.mainWindow.webContents.openDevTools();
+		// this.mainWindow.webContents.openDevTools();
 
 		this.mainWindow.on('closed', function(){
 			this.mainWindow = null

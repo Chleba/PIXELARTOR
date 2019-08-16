@@ -119,40 +119,6 @@ class View3D {
 		this.scene.add(scene);
 
 		this._modelLoaded();
-
-		// // var modelURL = 'res/models/knight/scene.gltf';
-		// var modelURL = '../res/models/deer_23/scene.gltf';
-		// // var modelURL = 'res/models/littlest_tokyo/scene.gltf';
-		// // var modelURL = 'res/busterDrone/busterDrone.gltf';
-		// // var modelURL = 'res/pirates/Models/gltf/ship_dark.gltf';
-		// this.modelURL = modelURL;
-
-		// var loader = new THREE.GLTFLoader();
-		// loader.load(modelURL, function ( gltf ) {
-		// 	gltf.scene.traverse( function ( child ) {
-		// 		if ( child.isMesh ) {
-		// 			// -- add meshes from scene into a array
-		// 			this.childs.push(child);
-
-		// 			// child.material.envMap = this.envMap;
-		// 			child.castShadow 			= true;
-		// 			// child.receiveShadow 	= true;
-		// 		}
-		// 	}.bind(this));
-
-		// 	// -- ANIMATIONS
-		// 	var animations = gltf.animations;
-		// 	if ( animations && animations.length ) {
-		// 		this.mixer = new THREE.AnimationMixer( gltf.scene );
-		// 	}
-
-		// 	// -- add to the scene
-		// 	this.scene.add( gltf.scene );
-		// 	this.model = gltf;
-
-		// 	this._modelLoaded();
-
-		// }.bind(this), undefined, function ( e ) { console.error( e ); });
 	}
 
 	_tick(t){
@@ -305,31 +271,29 @@ class View3D {
 		// -- load file
 		var file = e.data.file;
 		var path = e.data.path;
-		var loader = new THREE.GLTFLoader();
-		loader.parse(file, path, function ( gltf ) {
-			gltf.scene.traverse( function ( child ) {
+		var fName = e.data.name
+
+		var loader = new ModelLoader()
+		loader.load(file, path, fName, function(model){
+			var scene = 'scene' in model ? model.scene : model
+			scene.traverse( function ( child ) {
 				if ( child.isMesh ) {
-					// -- add meshes from scene into a array
-					this.childs.push(child);
-					// child.material.envMap = this.envMap;
 					child.castShadow 			= true;
 					child.receiveShadow 	= true;
 				}
 			}.bind(this));
-
 			// -- ANIMATIONS
-			var animations = gltf.animations;
+			var animations = model.animations;
 			if ( animations && animations.length ) {
-				this.mixer = new THREE.AnimationMixer( gltf.scene );
+				this.mixer = new THREE.AnimationMixer( scene );
 			}
 
 			// -- add to the scene
-			this.scene.add( gltf.scene );
-			this.model = gltf;
+			this.scene.add( scene );
+			this.model = model;
 
 			this._modelLoaded();
-
-		}.bind(this), function ( e ) { console.error( e ); });
+		}.bind(this))
 	}
 
 	_link(){

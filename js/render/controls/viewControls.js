@@ -9,7 +9,7 @@ class ViewControls{
 		this.cameraType 	= ENUMS.CAMERA_TYPE.orthographic;
 		this.ortho = {
 			rot : { x : 0, y : 0, z : 0 },
-			pos : { x : 0, y : 0, z : .02 }
+			pos : { x : 0, y : 0, z : .05 }
 		};
 		this.perspective = {
 			rot : { x : 0, y : 0, z : 0 },

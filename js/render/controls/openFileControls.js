@@ -53,7 +53,7 @@ class OpenFileControls {
 			for(var i=0;i<f.length-1;i++){ path += f[i]+'/'; }
 			fs.readFile(file, (err, data) => {
 				if(err){ alert(err); }
-				GAME.signals.makeEvent('file3d.loaded', window, { file : data, path : path });
+				GAME.signals.makeEvent('file3d.loaded', window, { file : data, path : path, name : f[f.length-1] });
 			});
 		}
 	}
@@ -62,7 +62,7 @@ class OpenFileControls {
 		dialog.showOpenDialog({
 			properties: ['openFile'],
 			filters: [
-				{ name: 'Custom File Type', extensions: ['gltf'] },
+				{ name: 'Custom File Type', extensions: ['gltf', 'fbx'] },
 			]
 		}, this.handleOpenFile.bind(this));
 	}
