@@ -1,6 +1,6 @@
 {
   "name": "PIXELARTOR",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Animation Tool for converting 3D models with animations to 2D sprite frames.",
   "main": "main.js",
   "scripts": {
