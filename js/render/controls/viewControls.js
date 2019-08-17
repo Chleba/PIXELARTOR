@@ -231,27 +231,28 @@ class ViewControls{
 
 	_input(e){
 		var value = e.target.value * 1;
-	
+		var scene = 'scene' in this.view3D.model ? this.view3D.model.scene : this.view3D.model
+
 		// -- update camera
 		switch(e.target.name){
 			case 'posX':
 				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					this.view3D.model.scene.position.x = value;
+					scene.position.x = value;
 					this.ortho.pos.x = value;
 				}
 				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					// this.view3D.model.scene.position.x = value;
-					this.view3D.model.scene.position.x = value;
+					// scene.position.x = value;
+					scene.position.x = value;
 					this.perspective.pos.x = value;
 				}
 				break;
 			case 'posY':
 				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					this.view3D.model.scene.position.y = value;
+					scene.position.y = value;
 					this.ortho.pos.y = value;
 				}
 				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					this.view3D.model.scene.position.y = value;
+					scene.position.y = value;
 					this.perspective.pos.y = value;
 				}
 				break;
@@ -270,31 +271,31 @@ class ViewControls{
 			case 'rotX':
 				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
 					console.log(this.view3D.model)
-					this.view3D.model.scene.rotation.x = THREE.Math.degToRad(value);
+					scene.rotation.x = THREE.Math.degToRad(value);
 					this.ortho.rot.x = value;
 				}
 				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					this.view3D.model.scene.rotation.x = THREE.Math.degToRad(value);
+					scene.rotation.x = THREE.Math.degToRad(value);
 					this.perspective.rot.x = value;
 				}
 				break;
 			case 'rotY':
 				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					this.view3D.model.scene.rotation.y = THREE.Math.degToRad(value);
+					scene.rotation.y = THREE.Math.degToRad(value);
 					this.ortho.rot.y = value;
 				}
 				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					this.view3D.model.scene.rotation.y = THREE.Math.degToRad(value);
+					scene.rotation.y = THREE.Math.degToRad(value);
 					this.perspective.rot.y = value;
 				}
 				break;
 			case 'rotZ':
 				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					this.view3D.model.scene.rotation.z = THREE.Math.degToRad(value);
+					scene.rotation.z = THREE.Math.degToRad(value);
 					this.ortho.rot.z = value;
 				}
 				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					this.view3D.model.scene.rotation.z = THREE.Math.degToRad(value);
+					scene.rotation.z = THREE.Math.degToRad(value);
 					this.perspective.rot.z = value;
 				}
 				break;

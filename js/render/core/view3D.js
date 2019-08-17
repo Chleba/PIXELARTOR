@@ -261,7 +261,7 @@ class View3D {
 
 	uploadedFile(e){
 		// -- remove old model
-		this.scene.remove(this.model.scene);
+		this.scene.remove('scene' in this.model ? this.model.scene : this.model);
 		this.model = null;
 		this.mixer = null;
 
