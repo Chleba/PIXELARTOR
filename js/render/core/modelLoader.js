@@ -7,8 +7,10 @@ class ModelLoader {
 	}
 	load(file, path, name, cb){
 		var ext = name.split('.')[name.split('.').length-1]
-		var loader = new this.loaders[ext]();
-		loader.load(path+'/'+name, cb)
+		var loader = new this.loaders[ext.toLocaleLowerCase()]();
+		loader.setPath(path)
+		loader.setResourcePath(path)
+		loader.load(name, cb)
 		// -- fbx not working with binary buffer - TODO
 		// loader.parse(file, path, cb, function (e) { console.error(e); });
 	}

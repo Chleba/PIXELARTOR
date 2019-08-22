@@ -48,9 +48,12 @@ class OpenFileControls {
 			this.dom.fileInput.value = file;
 			this.dom.fileInput.style.display = 'inline-block';
 			// -- file process
-			var f = file.split('/');
+			var isWin = process.platform === "win32";
+
+			var f = file.split( isWin ? "\\" : "/");
 			var path = '';
-			for(var i=0;i<f.length-1;i++){ path += f[i]+'/'; }
+			var separator = isWin ? '\\' : '/';
+			for(var i=0;i<f.length-1;i++){ path += f[i]+separator; }
 			fs.readFile(file, (err, data) => {
 				if(err){ alert(err); }
 				GAME.signals.makeEvent('file3d.loaded', window, { file : data, path : path, name : f[f.length-1] });

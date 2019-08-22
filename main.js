@@ -24,7 +24,6 @@ MainApp.prototype = {
 	},
 
 	makeModules : function(){
-		console.log('MASLO ?111---')
 		this.appManager 	= new APPManager.APPManager(this.mainWindow);
 		this.export 			= new ExportFile.ExportFile(this.mainWindow);
 	},
@@ -42,7 +41,6 @@ MainApp.prototype = {
 			backgroundColor : '#333',
 			icon 						: __dirname + '/icon.png'
 		});
-		console.log(__dirname + '/icon.png')
 		this.mainWindow.setMenu(null);
 		this.mainWindow.loadURL(url.format({
 			pathname: path.join(__dirname, 'templates/app.html'),

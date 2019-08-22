@@ -68,6 +68,7 @@ THREE.GLTFLoader = ( function () {
 			loader.setPath( this.path );
 			loader.setResponseType( 'arraybuffer' );
 
+			console.log('GLTF LOADER url', url, this.path)
 			loader.load( url, function ( data ) {
 
 				try {
