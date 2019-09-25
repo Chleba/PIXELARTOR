@@ -17,6 +17,8 @@ This Tool is heavily inspired Dead Cell pipeline article on [Gamasutra website](
 - export to sprites or gif (others format soon)
 
 ## Features
+[![PIXELARTOR features](https://img.youtube.com/vi/Rq_gJ30AU2w/0.jpg)](https://www.youtube.com/watch?v=Rq_gJ30AU2w "PIXELARTOR features")
+<!-- https://www.youtube.com/watch?v=Rq_gJ30AU2w -->
 
 ### Orthogonal &amp; Projective Camera
 Normal Orthogonal camera with position and rotation settings &amp; Projection camera with free look controls using mouse and keyboard.
