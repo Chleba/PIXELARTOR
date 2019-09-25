@@ -25,6 +25,15 @@ class FreeControls {
 		this.getDirection()
 		this.link();
 	}
+	setPosition(pos){
+		this.yawObject.position.x = pos.x;
+		this.yawObject.position.y = pos.y;
+		this.yawObject.position.z = pos.z;
+	}
+	setRotation(rot){
+		this.yawObject.rotation.y = rot.x;
+		this.pitchObject.rotation.x = rot.y;
+	}
 	getObject(){ return this.yawObject; }
 	getDirection(){
 		var direction = new THREE.Vector3( 0, 0, -1 );
@@ -113,6 +122,12 @@ class FreeControls {
 		this.yawObject.translateX(vx);
 		this.yawObject.translateY(vy);
 		this.yawObject.translateZ(vz);
+
+		GAME.signals.makeEvent('camera.update', window, {
+			pos : this.yawObject.position,
+			rot : { x : this.yawObject.rotation.y, y : this.pitchObject.rotation.x }
+			// rot : this.getDirection()(this)
+		});
 	}
 	_changeSpeed(e){ this.speed = e.data.speed; }
 	link(){

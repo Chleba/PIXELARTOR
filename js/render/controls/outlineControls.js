@@ -1,6 +1,7 @@
  class OutlineControls {
 
-	constructor(rootElm){
+	constructor(app, rootElm){
+		this.app 					= app;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
 		this.inputs 			= [];
@@ -29,9 +30,13 @@
 	}
 
 	_makeOutlines(){
+
+		var div = document.createElement('div');
+		this.dom.rootElm.appendChild(div);
+
 		this.dom.outlineContainer = document.createElement('div');
 		this.dom.outlineContainer.className = 'outlineContainer';
-		this.dom.rootElm.appendChild(this.dom.outlineContainer);
+		div.appendChild(this.dom.outlineContainer);
 
 		var div = document.createElement('div');
 		div.className = 'switcher';

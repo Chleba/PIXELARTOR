@@ -1,5 +1,6 @@
 class AnimControls {
-	constructor(rootElm){
+	constructor(app, rootElm){
+		this.app 					= app;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
 		this.model 				= null;

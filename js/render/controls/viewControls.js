@@ -1,21 +1,27 @@
 class ViewControls{
-	constructor(rootElm, view3D){
+	constructor(app, rootElm){
+		this.app 					= app;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
-		this.view3D 			= view3D;
+		this.view3D 			= null;
 		this.inputs 			= [];
 		this.lastValue 		= { x : 0, y : 0, z : 0 };
 		this.inputCount 	= 0;
 		this.cameraType 	= ENUMS.CAMERA_TYPE.orthographic;
 		this.ortho = {
 			rot : { x : 0, y : 0, z : 0 },
-			pos : { x : 0, y : 0, z : .05 }
+			pos : { x : 0, y : 0, z : 1 }
 		};
 		this.perspective = {
 			rot : { x : 0, y : 0, z : 0 },
 			pos : { x : 0, y : 0, z : 1 },
-			fov : 75
+			fov : 75,
+			free : false,
+			speed : 10
 		};
+		this.cInputs = {};
+		this.cInputs[ENUMS.CAMERA_TYPE.orthographic] = {}
+		this.cInputs[ENUMS.CAMERA_TYPE.perspective] = {}
 
 		this._makeDOM();
 		this._link();
@@ -27,13 +33,16 @@ class ViewControls{
 		this.dom.title.innerHTML = 'Camera:'
 		this.dom.rootElm.appendChild(this.dom.title);
 
+		var div = document.createElement('div');
+		this.dom.rootElm.appendChild(div);
+
 		this.dom.tabOrtho = document.createElement('a');
 		this.dom.tabOrtho.innerHTML = 'Orthogonal';
 		this.dom.tabOrtho.className = 'cameraSwitch active';
 		this.dom.tabOrtho.href = '#';
 		this.dom.tabOrtho.id = 'orthographic';
 		this.dom.tabOrtho.addEventListener('click', this._switchCamera.bind(this));
-		this.dom.rootElm.appendChild(this.dom.tabOrtho);
+		div.appendChild(this.dom.tabOrtho);
 
 		this.dom.tabProjective = document.createElement('a');
 		this.dom.tabProjective.innerHTML = 'Projective';
@@ -41,15 +50,15 @@ class ViewControls{
 		this.dom.tabProjective.href = '#';
 		this.dom.tabProjective.id = 'perspective';
 		this.dom.tabProjective.addEventListener('click', this._switchCamera.bind(this));
-		this.dom.rootElm.appendChild(this.dom.tabProjective);
+		div.appendChild(this.dom.tabProjective);
 
 		this.dom.orthoContainer = document.createElement('div');
 		this.dom.orthoContainer.className = 'controlsContainer';
-		this.dom.rootElm.appendChild(this.dom.orthoContainer);
+		div.appendChild(this.dom.orthoContainer);
 		this.dom.projectiveContainer = document.createElement('div');
 		this.dom.projectiveContainer.className = 'controlsContainer';
 		this.dom.projectiveContainer.style.display = 'none';
-		this.dom.rootElm.appendChild(this.dom.projectiveContainer);
+		div.appendChild(this.dom.projectiveContainer);
 
 		// ------------------------
 		// -- ortho inputs
@@ -68,7 +77,7 @@ class ViewControls{
 		var posY = this._makeRow('pos-y:', 'posY', this.ortho.pos.y);
 		this.dom.orthoContainer.appendChild(posY);
 
-		var posZ = this._makeRow('poz-z:', 'posZ', this.ortho.pos.z, -10, 10, 0.01);
+		var posZ = this._makeRow('zoom:', 'posZ', this.ortho.pos.z, 0.1, 100, 0.05);
 		this.dom.orthoContainer.appendChild(posZ);
 
 		// ------------------------
@@ -88,7 +97,7 @@ class ViewControls{
 		var posY = this._makeRow('pos-y:', 'posY', this.perspective.pos.y);
 		this.dom.projectiveContainer.appendChild(posY);
 
-		var posZ = this._makeRow('pos-z:', 'posZ', this.perspective.pos.z, 0, 100, 0.01);
+		var posZ = this._makeRow('pos-z:', 'posZ', this.perspective.pos.z);
 		this.dom.projectiveContainer.appendChild(posZ);
 
 		var fov = this._makeRow('fov:', 'fov', this.perspective.fov, 1, 100, 1);
@@ -117,20 +126,6 @@ class ViewControls{
 		label.appendChild(span);
 		freecamera.appendChild(label);
 
-		// var label1 = document.createElement('label');
-		// label1.className = 'switch';
-		// // label1.setAttribute('for', 'freecamera');
-		// var inputNumber 	= document.createElement('input');
-		// inputNumber.type 	= 'checkbox';
-		// inputNumber.name 	= 'freecamera';
-		// inputNumber.value = 1;
-		// inputNumber.addEventListener('input', this._freeCameraSwitch.bind(this));
-		// label1.appendChild(inputNumber);
-		// var span = document.createElement('span');
-		// span.className = 'slider';
-		// label1.appendChild(span);
-		// freecamera.appendChild(label1);
-
 		// -- camera speed
 		var label = document.createElement('label');
 		label.className = 'lTitle';
@@ -140,7 +135,7 @@ class ViewControls{
 		var inputNumber 	= document.createElement('input');
 		inputNumber.type 	= 'number';
 		inputNumber.name 	= 'cameraspeed';
-		inputNumber.value = 1.0;
+		inputNumber.value = this.perspective.speed;
 		inputNumber.addEventListener('input', this._changeCameraSpeed.bind(this));
 		freecamera.appendChild(inputNumber);
 
@@ -148,12 +143,12 @@ class ViewControls{
 	}
 
 	_freeCameraSwitch(e){
-		var checkbox = e.target;
-		console.log('_freeCameraSwitch', checkbox)
-		GAME.signals.makeEvent('camera.free', window, { state : checkbox.checked });
+		var ch = 'data' in e ? e.data.checked : e.target.checked;
+		GAME.signals.makeEvent('camera.free', window, { state : ch });
 	}
 
 	_changeCameraSpeed(e){
+		this.perspective.speed = e.target.value
 		GAME.signals.makeEvent('camera.free.speed', window, { speed : e.target.value });
 	}
 
@@ -219,6 +214,9 @@ class ViewControls{
 			this.dom.tabProjective.className = 'cameraSwitch';
 			this.dom.orthoContainer.style.display = 'block';
 			this.dom.projectiveContainer.style.display = 'none';
+			
+			this.dom.freeLookCheck.checked = false;
+			this._freeCameraSwitch({data:{checked : false}});
 		} else {
 			this.dom.tabOrtho.className = 'cameraSwitch';
 			this.dom.tabProjective.className = 'cameraSwitch active';
@@ -229,83 +227,57 @@ class ViewControls{
 		return false;
 	}
 
-	_input(e){
+	_input(e, cameraUpdate){
+		var cameraUpdate = cameraUpdate || true;
 		var value = e.target.value * 1;
 		var scene = 'scene' in this.view3D.model ? this.view3D.model.scene : this.view3D.model
-
+		
+		var CO = {};
+		CO[ENUMS.CAMERA_TYPE.orthographic] = { camera : this.view3D.cameraOrtho, obj : this.ortho };
+		CO[ENUMS.CAMERA_TYPE.perspective] = { camera : this.view3D.freeControls, obj : this.perspective };
+		var C = CO[this.cameraType];
 		// -- update camera
 		switch(e.target.name){
 			case 'posX':
-				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					scene.position.x = value;
-					this.ortho.pos.x = value;
-				}
-				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					// scene.position.x = value;
-					scene.position.x = value;
-					this.perspective.pos.x = value;
-				}
+				C.obj.pos.x = value
 				break;
 			case 'posY':
-				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					scene.position.y = value;
-					this.ortho.pos.y = value;
-				}
-				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					scene.position.y = value;
-					this.perspective.pos.y = value;
-				}
+				C.obj.pos.y = value
 				break;
 			case 'posZ':
-				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					this.view3D.camera.scale.set(value, value, 1);
-					this.view3D.camera.updateProjectionMatrix();
-					this.ortho.pos.z = value;
-				}
-				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					this.view3D.camera.scale.set(value, value, 1);
-					this.view3D.camera.updateProjectionMatrix();
-					this.perspective.pos.z = value;
-				}
+				C.obj.pos.z = value
 				break;
 			case 'rotX':
-				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					console.log(this.view3D.model)
-					scene.rotation.x = THREE.Math.degToRad(value);
-					this.ortho.rot.x = value;
-				}
-				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					scene.rotation.x = THREE.Math.degToRad(value);
-					this.perspective.rot.x = value;
-				}
+				C.obj.rot.x = value
 				break;
 			case 'rotY':
-				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					scene.rotation.y = THREE.Math.degToRad(value);
-					this.ortho.rot.y = value;
-				}
-				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					scene.rotation.y = THREE.Math.degToRad(value);
-					this.perspective.rot.y = value;
-				}
+				C.obj.rot.y = value
 				break;
 			case 'rotZ':
-				if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
-					scene.rotation.z = THREE.Math.degToRad(value);
-					this.ortho.rot.z = value;
-				}
-				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					scene.rotation.z = THREE.Math.degToRad(value);
-					this.perspective.rot.z = value;
-				}
+				C.obj.rot.z = value
 				break;
 			case 'fov':
-				if (this.cameraType == ENUMS.CAMERA_TYPE.perspective) {
-					this.perspective.fov = value;
-					this.view3D.camera.fov = value;
-					this.view3D.camera.updateProjectionMatrix();
-				}
+				C.obj.fov = value
 				break;
+		}
+		if (!!cameraUpdate) {
+			var p = C.obj.pos;
+			var r = C.obj.rot;
+			if (this.cameraType == ENUMS.CAMERA_TYPE.orthographic) {
+				C.camera.position.x = p.x;
+				C.camera.position.y = p.y;
+				C.camera.zoom = p.z;
+
+				C.camera.rotation.x = THREE.Math.degToRad(r.x);
+				C.camera.rotation.y = THREE.Math.degToRad(r.y);
+				C.camera.rotation.z = THREE.Math.degToRad(r.z);
+				C.camera.updateProjectionMatrix()
+			} else { // -- PROJECTIVE
+
+				C.camera.setPosition(p);
+				C.camera.setRotation({x:THREE.Math.degToRad(r.x), y:THREE.Math.degToRad(r.y)});
+			}
+			// C.camera.updateProjectionMatrix()
 		}
 		// -- update same input values
 		for(var i in this.inputs){
@@ -323,19 +295,40 @@ class ViewControls{
 		}
 	}
 
-	cameraChange(e){
-		var camera = e.data.camera;
+	cameraUpdate(e){
+		let pos = e.data.pos;
+		let rot = e.data.rot;
+		this.perspective.pos = pos;
+		this.perspective.rot.x = rot.x;
+		this.perspective.rot.y = rot.y;
 
-		var pos = camera.object.position;
-		var rot = { x : THREE.Math.radToDeg(camera.getPolarAngle()), y : THREE.Math.radToDeg(camera.getAzimuthalAngle()) };
-
-		// -- update inputs
-
+		var inputs = this.dom.projectiveContainer.getElementsByTagName('INPUT');
+		for(var i=0;i<inputs.length;i++){
+			var input = inputs[i];
+			switch(input.name){
+				case 'posX':
+					input.value = this.perspective.pos.x;
+					break;
+				case 'posY':
+					input.value = this.perspective.pos.y;
+					break;
+				case 'posZ':
+					input.value = this.perspective.pos.z;
+					break;
+				case 'rotX':
+					input.value = THREE.Math.radToDeg(this.perspective.rot.x);
+					break;
+				case 'rotY':
+					input.value = THREE.Math.radToDeg(this.perspective.rot.y);
+					break;
+			}
+		}
 	}
 
+	view3DInit(e){ this.view3D = e.data.view3D; }
+
 	_link(){
-		// GAME.signals.addListener(this, 'camera.change', this.cameraChange.bind(this));
-		// GAME.signals.addListener(this, 'camera.change', this.cameraChange.bind(this));
-		// GAME.signals.addListener(this, 'controls.done', this._bindControls.bind(this));
+		GAME.signals.addListener(this, 'view3D.init', this.view3DInit.bind(this));
+		GAME.signals.addListener(this, 'camera.update', this.cameraUpdate.bind(this));
 	}
 };

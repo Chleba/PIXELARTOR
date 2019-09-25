@@ -1,7 +1,7 @@
 class View3D {
 
-	constructor(rootElm){
-
+	constructor(app, rootElm){
+		this.app 			= app;
 		this.dom 			= {};
 		this.dom.root = rootElm;
 
@@ -27,6 +27,7 @@ class View3D {
 		this._makeCameras();
 		this._makeScene();
 		this._makeFreeCamera();
+		this._makeGrid();
 		this._makeLight();
 		this._loadScene();
 		this._makeRenderer();
@@ -53,7 +54,7 @@ class View3D {
 		// -- projective
 		this.cameraProjective = new THREE.PerspectiveCamera(75, this.elmSize.width / this.elmSize.height, 0.25, 2200);
 		// -- ortho
-		this.cameraOrtho = new THREE.OrthographicCamera(this.elmSize.width / - 2, this.elmSize.width / 2, this.elmSize.width / 2, this.elmSize.width / - 2, -1000, 1000);
+		this.cameraOrtho = new THREE.OrthographicCamera(this.elmSize.width / - 2, this.elmSize.width / 2, this.elmSize.width / 2, this.elmSize.width / - 2, -2000, 2000);
 		// -- set active camera
 		this.camera = this.cameraOrtho;
 
@@ -62,17 +63,13 @@ class View3D {
 
 	_makeScene(){
 		// -- enviro map
-		// var path = 'res/cubes/Bridge2/';
 		var path = '../res/cubes/skybox/';
 		var format = '.jpg';
-		this.envMap = new THREE.CubeTextureLoader().load( [
-			// path + 'posx' + format, path + 'negx' + format,
-			// path + 'posy' + format, path + 'negy' + format,
-			// path + 'posz' + format, path + 'negz' + format
+		this.envMap = new THREE.CubeTextureLoader().load([
 			path + 'px' + format, path + 'nx' + format,
 			path + 'py' + format, path + 'ny' + format,
 			path + 'pz' + format, path + 'nz' + format
-		] );
+		]);
 
 		// -- scene
 		this.scene = new THREE.Scene();
@@ -90,6 +87,11 @@ class View3D {
 		this.scene.add(this.freeControls.getObject());
 
 		this.clock = new THREE.Clock();
+	}
+
+	_makeGrid(){
+		// this.gridHelper = new THREE.GridHelper(1, 1000, 0xff0000, 0x000000)
+		// this.scene.add(this.gridHelper);
 	}
 
 	_makeLight(){ this.lights = new Lights(this.scene); }
@@ -135,6 +137,7 @@ class View3D {
 	_modelLoaded(){
 		GAME.signals.makeEvent('model.loaded', window, { model : this.model });
 		GAME.signals.makeEvent('loadinger.hide', window, null);
+		GAME.signals.makeEvent('view3D.init', window, { view3D : this });
 	}
 
 	stopAnimation(){

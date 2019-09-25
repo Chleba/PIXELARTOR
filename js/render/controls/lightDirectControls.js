@@ -1,6 +1,7 @@
 class LightDirectControls {
 
-	constructor(rootElm){
+	constructor(app, rootElm){
+		this.app 					= app;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
 		this.inputCount 	= 0;
@@ -32,9 +33,12 @@ class LightDirectControls {
 	}
 
 	_makePointLight(){
+		var d = document.createElement('div');
+		this.dom.rootElm.appendChild(d);
+
 		this.dom.directContainer = document.createElement('div');
 		this.dom.directContainer.className = 'directContainer';
-		this.dom.rootElm.appendChild(this.dom.directContainer);
+		d.appendChild(this.dom.directContainer);
 
 		// --
 		var div = document.createElement('div');

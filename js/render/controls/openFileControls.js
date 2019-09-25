@@ -1,7 +1,8 @@
 
 class OpenFileControls {
 
-	constructor(rootElm){
+	constructor(app, rootElm){
+		this.app 					= app;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
 		this.inputs 			= [];
@@ -29,7 +30,8 @@ class OpenFileControls {
 
 		// -- 
 		this.dom.button = document.createElement('button');
-		this.dom.button.innerHTML = '>> OPEN FILE <<';
+		this.dom.button.className = 'glyphicon glyphicon-folder-open'
+		// this.dom.button.innerHTML = '>> OPEN FILE <<';
 		this.dom.button.addEventListener('click', this.openDialog.bind(this), false);
 		this.dom.openFileContainer.appendChild(this.dom.button);
 

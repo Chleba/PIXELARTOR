@@ -35,16 +35,6 @@ class ExportZip {
 	_fileCreated(numOgImgs){
 		this.imgNum++
 		if (numOgImgs == this.imgNum) {
-			// console.log(this.dirPath, 'DIR PATH');
-			// zip.zipFolder(this.dirPath, this.savePath, function(err){
-			// 	if (err) { console.log(err, 'ERROR ZIP'); }
-			// 	this.cb();
-			// }.bind(this));
-
-			// var zip new AdmZip();
-			// zip.addLocalFolder(this.dirPath, this.savePath)
-
-
 			zipFolder.zipFolder(this.dirPath, this.savePath, function(err) {
         if(err) {
           console.log('Something went wrong!', err);
@@ -63,14 +53,6 @@ class ExportGif {
 	constructor(){}
 	export(img, path, cb){
 		SaveB64File(path, img, cb)
-		// var data = img.replace(/^data:image\/\w+;base64,/, '');
-		// fs.writeFile(path, data, { encoding : 'base64' }, function(err){
-		// 	if (!err) {
-		// 		cb();
-		// 	} else {
-		// 		new Error(err);
-		// 	}
-		// });
 	}
 }
 

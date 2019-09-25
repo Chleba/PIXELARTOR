@@ -30,8 +30,8 @@ SpriteframesRenderer.prototype = {
 	},
 
 	_getModules : function(){
-		this.view3D = this.app.view3D;
-		this.controls = this.app.viewControls;
+		// this.view3D = this.app.view3D;
+		// this.controls = this.app.viewControls;
 	},
 
 	_getFramesTime : function(){
@@ -73,65 +73,6 @@ SpriteframesRenderer.prototype = {
 
 		this._getCanvasFrame();
 	},
-
-	// _getCanvasFrame : function(){
-	// 	if (this.actualFrame >= this.maxFrames) {
-	// 		this._generateDone();
-	// 		return;
-	// 	}
-
-	// 	// -- loader
-	// 	GAME.signals.makeEvent('loadinger.progress', window, { progress : (this.actualFrame / this.maxFrames) });
-
-	// 	// -- set animation frame
-	// 	if (!!this.view3D.mixer) {
-	// 		this.view3D.animChange({ data : { time : (this.actualFrame) * (1/this.fps) }});
-	// 	}
-
-	// 	var canvas 	= this.view3D.renderer.domElement;
-	// 	var img1 		= new Image();
-	// 	img1.src 		= canvas.toDataURL();
-
-	// 	setTimeout(function(){
-	// 		var canvas 	= this.view3D.renderer.domElement;
-	// 		var img 		= new Image();
-	// 		img.src 		= canvas.toDataURL();
-	// 		img.onload 	= this._resizeImage.bind(this, img);
-	// 		this.sprites.push(img);
-	// 	}.bind(this), 20);
-	// 	this.actualFrame += 1;
-
-	// 	// img.onload 	= this._resizeImages.bind(this);
-	// 	// this.sprites.push(img);
-	// },
-
-	// _resizeImage : function(imgOrg){
-	// 	console.log('_resizeImage')
-	// 	var oImg = this.outline.draw(imgOrg);
-	// 	var imgs = [imgOrg, oImg];
-
-	// 	console.log(imgs)
-	// 	for(var i=0;i<imgs.length;i++){
-	// 		var s = imgs[i];
-	// 		// -- canvas draw
-	// 		this.canvas.clearRect(0, 0, this.dom.canvas.width, this.dom.canvas.height);
-	// 		this.canvas.save();
-	// 		this.canvas.drawImage(s, 0, 0, s.width, s.height, 0, 0, CONFIG.finalSize.width, CONFIG.finalSize.height);
-	// 		this.canvas.restore();
-	// 		// -- image create
-	// 		var img = new Image();
-	// 		img.src = this.dom.canvas.toDataURL();
-	// 		if (i == 1) {
-	// 			this.outlineImages.push(img);
-	// 		} else {
-	// 			this.normalImages.push(img);
-	// 		}
-	// 	}
-	// 	// -- 
-	// 	this._getCanvasFrame();
-	// },
-
-
 
 	_getCanvasFrame : function(){
 		if (this.actualFrame >= this.maxFrames) {
@@ -209,8 +150,11 @@ SpriteframesRenderer.prototype = {
 		this.dom.canvas.width = CONFIG.finalSize.width;
 		this.dom.canvas.height = CONFIG.finalSize.height;
 	},
+	
+	view3DInit(e){ this.view3D = e.data.view3D; },
 
-	_link : function(){
+	_link(){
+		GAME.signals.addListener(this, 'view3D.init', this.view3DInit.bind(this));
 		GAME.signals.addListener(this, 'generate.anim', this._generateAnimation.bind(this));
 		GAME.signals.addListener(this, 'fps.change', this.fpsChange.bind(this));
 		GAME.signals.addListener(this, 'size.change', this.sizeChange.bind(this));

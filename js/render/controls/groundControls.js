@@ -1,7 +1,8 @@
 class GroundControls {
 
-	constructor(rootElm, view3D){
-		this.view3D 			= view3D;
+	constructor(app, rootElm){
+		this.app 					= app;
+		this.view3D 			= null;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
 		this.inputs 			= [];
@@ -19,21 +20,23 @@ class GroundControls {
 		};
 
 		this._makeDOM();
-		this._makeGroundMesh();
-		this._updateInputs();
+		// this._makeGroundMesh();
+		// this._updateInputs();
 		this._link();
 	}
 
 	_makeGroundMesh(){	
-		var groundGeo = new THREE.PlaneBufferGeometry(this.opt.width, this.opt.height);
-		var groundMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff } );
-		// groundMat.color.setHSL( 0.095, 1, 0.75 );
-		// var groundMat = new THREE.MeshLambertMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
-		this.groundMesh = new THREE.Mesh( groundGeo, groundMat );
-		this.groundMesh.receiveShadow = true;
-		this.groundMesh.rotation.x = -Math.PI/2;
-		this.groundMesh.visible = this.opt.state;
-		this.view3D.scene.add(this.groundMesh);
+		if(this.view3D != null){
+			var groundGeo = new THREE.PlaneBufferGeometry(this.opt.width, this.opt.height);
+			var groundMat = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xffffff } );
+			// groundMat.color.setHSL( 0.095, 1, 0.75 );
+			// var groundMat = new THREE.MeshLambertMaterial( {color: 0xffffff, side: THREE.DoubleSide} );
+			this.groundMesh = new THREE.Mesh( groundGeo, groundMat );
+			this.groundMesh.receiveShadow = true;
+			this.groundMesh.rotation.x = -Math.PI/2;
+			this.groundMesh.visible = this.opt.state;
+			this.view3D.scene.add(this.groundMesh);
+		}
 	}
 
 	_makeDOM(){
@@ -48,9 +51,12 @@ class GroundControls {
 	}
 
 	_makeGroundInputs(){
+		var d = document.createElement('div');
+		this.dom.rootElm.appendChild(d);
+
 		this.dom.groundContainer = document.createElement('div');
 		this.dom.groundContainer.className = 'groundContainer';
-		this.dom.rootElm.appendChild(this.dom.groundContainer);
+		d.appendChild(this.dom.groundContainer);
 
 		// -- 
 		var div = document.createElement('div');
@@ -208,6 +214,7 @@ class GroundControls {
 	}
 
 	_updateMesh(){
+		if (this.view3D == null) { return; }
 		if (!!this.geoUpdate) {
 			this.view3D.scene.remove(this.groundMesh);
 			this._makeGroundMesh();
@@ -223,5 +230,13 @@ class GroundControls {
 
 	switchGround(e){ this._updateInputs(); }
 
-	_link(){ }
+	view3DInit(e){
+		this.view3D = e.data.view3D;
+		this._makeGroundMesh();
+		this._updateInputs();
+	}
+
+	_link(){
+		GAME.signals.addListener(this, 'view3D.init', this.view3DInit.bind(this));
+	}
 }

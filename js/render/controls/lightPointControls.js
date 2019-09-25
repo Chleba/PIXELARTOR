@@ -1,6 +1,7 @@
 class LightPointControls {
 
-	constructor(rootElm){
+	constructor(app, rootElm){
+		this.app 					= app;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
 		this.inputCount 	= 0;
@@ -32,9 +33,12 @@ class LightPointControls {
 	}
 
 	_makePointLight(){
+		var d = document.createElement('div');
+		this.dom.rootElm.appendChild(d);
+
 		this.dom.pointContainer = document.createElement('div');
 		this.dom.pointContainer.className = 'pointContainer';
-		this.dom.rootElm.appendChild(this.dom.pointContainer);
+		d.appendChild(this.dom.pointContainer);
 
 		// --
 		var div = document.createElement('div');

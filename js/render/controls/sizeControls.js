@@ -1,4 +1,5 @@
-var SizeControls = function(rootElm){
+var SizeControls = function(app, rootElm){
+	this.app 					= app;
 	this.dom 					= {};
 	this.dom.rootElm 	= rootElm;
 	this.inputs 			= [];
@@ -19,9 +20,12 @@ SizeControls.prototype = {
 		this.dom.title.innerHTML = 'Size:'
 		this.dom.rootElm.appendChild(this.dom.title);
 
+		var div = document.createElement('div');
+		this.dom.rootElm.appendChild(div);
+
 		this.dom.sizeContainer = document.createElement('div');
 		this.dom.sizeContainer.className = 'sizeContainer';
-		this.dom.rootElm.appendChild(this.dom.sizeContainer);
+		div.appendChild(this.dom.sizeContainer);
 
 		// ------------------------
 		// -- size inputs

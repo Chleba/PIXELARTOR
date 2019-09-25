@@ -1,5 +1,6 @@
 class View2D {
-	constructor(rootElm){
+	constructor(app, rootElm){
+		this.app = app;
 		this.dom = {};
 		this.dom.rootElm = rootElm;
 		this.animTime = 0;

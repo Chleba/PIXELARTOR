@@ -4,9 +4,6 @@ var url 					= require('url');
 var APPManager 		= require('./js/main/appmanager.js');
 var ExportFile 		= require('./js/main/export.js');
 var ENUMS 				= require('./js/render/core/enums.js');
-// const fs 					= require('fs');
-
-console.log(ENUMS)
 
 var MainApp = function(){
 	this.mainWindow = null;
@@ -30,8 +27,8 @@ MainApp.prototype = {
 
 	makeMainWindow : function(){
 		this.mainWindow = new BrowserWindow({
-			width 					: 1024,
-			height					: 768,
+			width 					: 1280,
+			height					: 800,
 			minWidth 				: 800,
 			minHeight				: 600,
 			resizable 			: true,

@@ -332,3 +332,54 @@ Date.prototype.format = function (str) {
     }
     return result;
 };
+
+var Hider = {
+    states : {},
+    addNodes : function(nodes){
+      this.nodes = nodes;
+      // document.addEventListener('DOMContentLoaded', this._makeIcons.bind(this));
+      // window.onload = function(){
+      //   console.log('on load hider')
+      // }
+      this._makeIcons();
+    },
+    _makeIcons : function(){
+      for(var i in this.nodes){
+        var n = this.nodes[i],
+            s = document.createElement('span');
+        s.id = 'hideNode'+i;
+        s.className = 'hideIcon glyphicon glyphicon-chevron-down'
+        s.addEventListener('click', this.changeState.bind(this));
+        n.appendChild(s);
+        var d = n.getElementsByTagName('DIV')[0],
+            h = d.offsetHeight;
+        d.style.transition = 'all .2s ease-in';
+        d.style.overflow = 'hidden';
+        // d.style.height = h+'px';
+        d.style.height = 'auto';
+        this.states[s.id] = {
+          state : true,
+          node : n,
+          // defaultHeight : h,
+          icon : s
+        };
+      }
+    },
+    changeState : function(e){
+      var so = this.states[e.target.id];
+      so.state = !so.state;
+      var d = so.node.getElementsByTagName('DIV')[0];
+      d.style.transition = 'all .2s ease-in';
+      d.style.overflow = 'hidden';
+      d.style.maxHeight = !!so.state ? '300px' : '0px';
+      // if (!!so.state) {
+      //   d.style.animation = 'show_hider .2s ease-in';
+      // } else {
+      //   d.style.animation = 'hide_hider .2s ease-in';
+      // }
+      // d.style.animation = 'show_hider .2s ease-in';
+      // d.style.height = !!so.state ? so.defaultHeight+'px' : '0px';
+      so.icon.className = !!so.state ? 'hideIcon glyphicon glyphicon-chevron-down' : 'hideIcon glyphicon glyphicon-chevron-right';
+    }
+
+};

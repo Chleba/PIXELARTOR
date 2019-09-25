@@ -1,6 +1,7 @@
 class LightHemiControls {
 
-	constructor(rootElm){
+	constructor(app, rootElm){
+		this.app 					= app;
 		this.dom 					= {};
 		this.dom.rootElm 	= rootElm;
 		this.inputs 			= [];
@@ -29,9 +30,12 @@ class LightHemiControls {
 	}
 
 	_makeHemisphereLight(){
+		var d = document.createElement('div');
+		this.dom.rootElm.appendChild(d);
+
 		this.dom.hemiContainer = document.createElement('div');
 		this.dom.hemiContainer.className = 'hemiContainer';
-		this.dom.rootElm.appendChild(this.dom.hemiContainer);
+		d.appendChild(this.dom.hemiContainer);
 
 		var div = document.createElement('div');
 		div.className = 'switcher';
