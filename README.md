@@ -18,7 +18,7 @@ This Tool is heavily inspired Dead Cell pipeline article on [Gamasutra website](
 
 ## Features
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=Rq_gJ30AU2w"><img width="200" src="./screenshots/youtube.png" alt="PIXELARTOR features"></a>
+  <a href="https://www.youtube.com/watch?v=Rq_gJ30AU2w"><img width="400" src="./screenshots/youtube.png" alt="PIXELARTOR features"></a>
 </div>
 
 ### Orthogonal &amp; Projective Camera
