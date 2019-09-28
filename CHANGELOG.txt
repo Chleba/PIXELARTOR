@@ -1,0 +1,6 @@
+[v0.2.2]
++ add hidding control modules feature
++ fix handling of projective camera with free controls
++ fix orthogonal camera controls
++ refactor modules initialization
++ update design
