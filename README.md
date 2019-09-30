@@ -68,19 +68,19 @@ Also feel free to contact me and suggest some missing feature you would like me 
 
 ## TODO
 There are some features that I am looking to implement:
- - fixing cameras position controls
- - add more supported 3D formats
- - generating normal map textures
- - loading videos
- - selecting range of generated frames
- - fixing lights and shadow
- - add transparent ground mesh for functional outlines and shadows
- - add timeline for camera move animation
- - export into a spritesheet with customize grid
- - export into a video file
- - better UI
- - mesh inspector with simple color shaders
- - ** rewrite into native C++ application with custom animation control **
+ - [x] fix cameras position controls
+ - [x] add more supported 3D formats
+ - [ ] generating normal map textures
+ - [ ] loading videos
+ - [ ] selecting range of generated frames
+ - [ ] fixing lights and shadow
+ - [ ] add transparent ground mesh for functional outlines and shadows
+ - [ ] add timeline for camera move animation
+ - [ ] export into a spritesheet with customize grid
+ - [ ] export into a video file
+ - [ ] better UI
+ - [ ] mesh inspector with simple color shaders
+ - [ ] ** rewrite into native C++ application with custom animation control **
 
 ## Binaries
 To get started you can visit [Release](https://github.com/Chleba/PIXELARTOR/releases) page and download
@@ -94,4 +94,4 @@ Thanks to [**NORBERTO-3D**](https://sketchfab.com/norberto3d) for Phoenix bird m
 Thanks to Electron, yarn, THREEJS teams and all others developers for their hard work on amazing libraries and frameworks that i've been able to use easily to create this tool. (see [package.json](./package.json) for every package I used and it's developers)
 
 ## LICENSE
-SHADERed is licensed under MIT license. See [LICENSE](./LICENSE) for more details.
+PIXELARTOR is licensed under MIT license. See [LICENSE](./LICENSE) for more details.
