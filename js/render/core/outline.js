@@ -105,10 +105,12 @@ class Outline {
 
     this._link();
   }
+
   defineNonTransparent(x,y){
     var a = this.data[(y*this.dom.canvas.width+x)*4+3];
     return(a>0);
   }
+
   _getImgData(img){
     this.dom.canvas.width = img.width;
     this.dom.canvas.height = img.height;
@@ -142,7 +144,7 @@ class Outline {
   //   return img;
   // }
 
-  draw(img){
+  draw(img, cb){
     this.dom.canvas.width = img.width;
     this.dom.canvas.height = img.height;
     this.canvas.clearRect(0, 0, this.dom.canvas.width, this.dom.canvas.height);
@@ -168,9 +170,28 @@ class Outline {
 
     // -- create img
     var img = new Image();
+    img.onload = this._resizeOutline.bind(this, img, cb);
+    // img.onload = cb.bind(this, img);
     img.src = this.dom.canvas.toDataURL();
 
-    return img;
+    // return img;
+  }
+
+  _resizeOutline(img, cb){
+    this.dom.canvas.width = CONFIG.finalSize.width;
+    this.dom.canvas.height = CONFIG.finalSize.height;
+
+    this.canvas.clearRect(0, 0, this.dom.canvas.width, this.dom.canvas.height);
+    this.canvas.save();
+    this.canvas.drawImage(img, 0, 0, img.width, img.height, 0, 0, CONFIG.finalSize.width, CONFIG.finalSize.height);
+    this.canvas.restore();
+    // -- outline images
+    var oImg = new Image();
+    oImg.onload = function(){
+      cb(oImg);
+    }.bind(this);
+    oImg.src = this.dom.canvas.toDataURL();
+    // this.outlineImages.push(oImg);
   }
 
   _outlineChange(e){

@@ -70,6 +70,7 @@ Also feel free to contact me and suggest some missing feature you would like me 
 There are some features that I am looking to implement:
  - [x] fix cameras position controls
  - [x] add more supported 3D formats
+ - [ ] add colors filters
  - [ ] generating normal map textures
  - [ ] loading videos
  - [ ] selecting range of generated frames

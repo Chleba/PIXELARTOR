@@ -1,6 +1,5 @@
 var { ipcMain }			= require('electron');
 var fs 							= require('fs');
-// var zip 						= require('file-zip');
 var zipFolder 			= require('zip-a-folder');
 var ENUMS 					= require('../../js/render/core/enums.js');
 

@@ -75,7 +75,7 @@ SpriteframesRenderer.prototype = {
 	},
 
 	_getCanvasFrame : function(){
-		if (this.actualFrame >= this.maxFrames) {
+		if (this.actualFrame > this.maxFrames) {
 			this._generateDone();
 			return;
 		}
@@ -88,48 +88,58 @@ SpriteframesRenderer.prototype = {
 		}
 
 		var canvas 	= this.view3D.renderer.domElement;
-		var img1 		= new Image();
-		img1.src 		= canvas.toDataURL();
+		// var img1 		= new Image();
+		// img1.src 		= canvas.toDataURL();
 
 		setTimeout(function(){
 			var canvas 	= this.view3D.renderer.domElement;
 			var img 		= new Image();
-			img.src 		= canvas.toDataURL();
 			img.onload 	= this._resizeImage.bind(this, img);
+			img.src 		= canvas.toDataURL();
 			this.sprites.push(img);
 		}.bind(this), 20);
 		this.actualFrame += 1;
 	},
 
 	_resizeImage : function(img){
-		var s1 = this.outline.draw(img);
+		// var s1 = this.outline.draw(img);
 		var s = img;
 
-		// -- canvas draw
+		// -- canvas draw normal
 		this.canvas.clearRect(0, 0, this.dom.canvas.width, this.dom.canvas.height);
 		this.canvas.save();
 		this.canvas.drawImage(s, 0, 0, s.width, s.height, 0, 0, CONFIG.finalSize.width, CONFIG.finalSize.height);
 		this.canvas.restore();
 		// -- image create
 		var nImg = new Image();
+		nImg.onload = this._drawOutline.bind(this, img);
 		nImg.src = this.dom.canvas.toDataURL();
 		this.normalImages.push(nImg);
 
-		// var img = this.outline.draw(img)
-		// this.outlineImages.push(img);
+		// this.outlineImages.push(nImg);
 
-		// -- canvas draw
-		this.canvas.clearRect(0, 0, this.dom.canvas.width, this.dom.canvas.height);
-		this.canvas.save();
-		this.canvas.drawImage(s1, 0, 0, s1.width, s1.height, 0, 0, CONFIG.finalSize.width, CONFIG.finalSize.height);
-		this.canvas.restore();
-		// -- outline images
-		var oImg = new Image();
-		oImg.src = this.dom.canvas.toDataURL();
-		this.outlineImages.push(oImg);
+		// var s1 = this.outline.draw(s)
+		// this.outlineImages.push(s1);
+
+		// // -- canvas draw outline
+		// this.canvas.clearRect(0, 0, this.dom.canvas.width, this.dom.canvas.height);
+		// this.canvas.save();
+		// this.canvas.drawImage(s1, 0, 0, s1.width, s1.height, 0, 0, CONFIG.finalSize.width, CONFIG.finalSize.height);
+		// this.canvas.restore();
+		// // -- outline images
+		// var oImg = new Image();
+		// oImg.src = this.dom.canvas.toDataURL();
+		// this.outlineImages.push(oImg);
 
 		// -- 
-		this._getCanvasFrame();
+		// this._getCanvasFrame();
+	},
+
+	_drawOutline : function(img){
+		this.outline.draw(img, function(oImg){
+			this.outlineImages.push(oImg);
+			this._getCanvasFrame();
+		}.bind(this));
 	},
 
 	_generateDone : function(){

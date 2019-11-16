@@ -1,4 +1,4 @@
-const {dialog} = require('electron').remote;
+const {dialog, BrowserWindow} = require('electron').remote;
 const fs = require('fs');
 
 class App {
@@ -45,8 +45,6 @@ class App {
 
 			this.hideNodes.push(d);
 		});
-
-		// Hider.addNodes(this.hideNodes);
 	}
 
 	_makeRIGHT(){
@@ -84,8 +82,9 @@ class App {
 	}
 
 	_windowResize(e) {
-		this.view3D._sizeChange();
-		this.view2D._sizeChange();
+		GAME.signals.makeEvent('size.change', window, {});
+		// this.view3D._sizeChange();
+		// this.view2D._sizeChange();
 	}
 
 	_link(){

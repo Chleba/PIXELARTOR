@@ -36,7 +36,8 @@ MainApp.prototype = {
 			maximizable 		: true,
 			darkTheme 			: true,
 			backgroundColor : '#333',
-			icon 						: __dirname + '/icon.png'
+			icon 						: __dirname + '/icon.png',
+			webPreferences	: { nodeIntegration : true }
 		});
 		this.mainWindow.setMenu(null);
 		this.mainWindow.loadURL(url.format({

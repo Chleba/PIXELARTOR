@@ -4,5 +4,7 @@ var CONFIG = {
 	scale 			: 0.25,
 	defaultFps	: 60,
 	fps 				: 60,
-	outline 		: false
+	outline 		: false,
+	frameStart 	: 0,
+	frameEnd 		: 0
 };

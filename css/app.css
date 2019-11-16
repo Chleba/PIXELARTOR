@@ -60,6 +60,7 @@ input:checked + .slider:before { transform: translateX(16px); }
 .AnimControls button:hover { color:#fff; background:#333; }
 .AnimControls * { display:flex; align-items:center; }
 .AnimControls input[type="number"] { width:20%; }
+.AnimControls button.active { background:#fdcb77; }
 
 .Thumbnails { overflow-x:auto; overflow-y:hidden; border-bottom:1px solid #ddd; display:flex; height:45px; min-width:100%; align-items:flex-start; background:#fff; }
 .Thumbnails img { max-height:32px; border:1px solid #ddd; display:block; transition:0.3s; }

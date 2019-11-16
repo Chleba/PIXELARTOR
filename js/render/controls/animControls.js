@@ -72,12 +72,12 @@ class AnimControls {
 			this.dom.animContainer.appendChild(this.dom.loop);
 
 			// -- play button
-			var pButton = document.createElement('button');
+			this.dom.pButton = document.createElement('button');
 			// pButton.innerHTML = 'play';
-			pButton.title = 'Play';
-			pButton.className = 'glyphicon glyphicon-play';
-			pButton.addEventListener('click', this.playAnimation.bind(this));
-			this.dom.animContainer.appendChild(pButton);
+			this.dom.pButton.title = 'Play';
+			this.dom.pButton.className = 'glyphicon glyphicon-play';
+			this.dom.pButton.addEventListener('click', this.playAnimation.bind(this));
+			this.dom.animContainer.appendChild(this.dom.pButton);
 
 			// -- stop button
 			var sButton = document.createElement('button');
@@ -126,11 +126,22 @@ class AnimControls {
 	// playAnimation(e){ GAME.signals.makeEvent('play.anim', window, { loop : this.dom.loop.checked }); }
 	// stopAnimation(e){ GAME.signals.makeEvent('stop.anim', window, { }); }
 
-	playAnimation(e){ this.playing = true; this.timeThen = Date.now(); this._tick(); }
-	stopAnimation(e){ this.playing = false; window.cancelAnimationFrame(this.reqAnimFrame); }
+	playAnimation(e){
+		if(this.dom.pButton){this.dom.pButton.classList.add('active');}
+		this.playing = true;
+		this.timeThen = Date.now();
+		this._tick();
+	}
+
+	stopAnimation(e){
+		if(this.dom.pButton){this.dom.pButton.classList.remove('active');}
+		this.playing = false;
+		window.cancelAnimationFrame(this.reqAnimFrame);
+	}
 
 	animChange(e){
-		if (!('fake' in e)) { window.cancelAnimationFrame(this.reqAnimFrame); }
+		// if (!('fake' in e)) { window.cancelAnimationFrame(this.reqAnimFrame); }
+		if (!('fake' in e)) { this.stopAnimation(); }
 		var time = e.target.value * 1;
 		GAME.signals.makeEvent('anim.change', window, { time : time, maxTime : e.target.max });
 	}
@@ -176,7 +187,35 @@ class AnimControls {
 			this.dom.fps.value = CONFIG.defaultFps;
 			this.dom.fps.addEventListener('input', this.fpsChange.bind(this));
 			this.dom.generalDiv.appendChild(this.dom.fps);
+
+			// -- FROM - TO
+			// var label = document.createElement('label');
+			// label.innerHTML = 'from:';
+			// this.dom.generalDiv.appendChild(label);
+
+			// this.dom.frameStart = document.createElement('input');
+			// this.dom.frameStart.type = 'number';
+			// this.dom.frameStart.value = CONFIG.frameStart;
+			// this.dom.frameStart.addEventListener('input', this.frameRangeChange.bind(this));
+			// this.dom.generalDiv.appendChild(this.dom.frameStart);
+
+			// var label = document.createElement('label');
+			// label.innerHTML = 'to:';
+			// this.dom.generalDiv.appendChild(label);
+
+			// this.dom.frameEnd = document.createElement('input');
+			// this.dom.frameEnd.type = 'number';
+			// this.dom.frameEnd.value = CONFIG.frameEnd;
+			// this.dom.frameEnd.addEventListener('input', this.frameRangeChange.bind(this));
+			// this.dom.generalDiv.appendChild(this.dom.frameEnd);
 		}
+	}
+
+	frameRangeChange(e){
+		var fStart = this.dom.frameStart.value,
+				fEnd = this.dom.frameEnd.value;
+		CONFIG.frameStart = fStart;
+		CONFIG.frameEnd = fEnd;
 	}
 
 	fpsChange(e){
@@ -199,8 +238,7 @@ class AnimControls {
 				if (this.dom.loop.checked) {
 					this.time = this.time % this.dom.range.max;
 				} else {
-					this.playing = false;
-					window.cancelAnimationFrame(this.reqAnimFrame);
+					this.stopAnimation()
 				}
 			}
 			this.dom.range.value = this.time;
