@@ -39,7 +39,11 @@ MainApp.prototype = {
 			icon 						: __dirname + '/icon.png',
 			webPreferences	: { nodeIntegration : true }
 		});
+		
 		this.mainWindow.setMenu(null);
+		this.mainWindow.removeMenu();
+		this.mainWindow.setMenuBarVisibility(false);
+
 		this.mainWindow.loadURL(url.format({
 			pathname: path.join(__dirname, 'templates/app.html'),
 			protocol: 'file:',
