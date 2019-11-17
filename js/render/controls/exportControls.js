@@ -136,15 +136,16 @@ class ExportControls {
 
 	openSaveDialog(images, saveOptions){
 		GAME.signals.makeEvent('loadinger.hide', window, null);
-
-		var filename = dialog.showSaveDialog(remote.getCurrentWindow(), saveOptions)
-		if (filename !== undefined) {
-			ipcRenderer.send('export-file', {
-				images : images,
-				type : this.exportType,
-				file : filename
-			})
-		}
+		dialog.showSaveDialog(remote.getCurrentWindow(), saveOptions).then(filename => {
+			console.log(filename)
+			if (filename !== undefined) {
+				ipcRenderer.send('export-file', {
+					images : images,
+					type : this.exportType,
+					file : filename.filePath
+				})
+			}
+		});
 	}
 
   decodeBase64Image(dataString) {

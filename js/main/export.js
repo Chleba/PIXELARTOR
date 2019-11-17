@@ -23,6 +23,10 @@ class ExportZip {
 		this.savePath = path;
 		this.imgNum = 0;
 		var tmpDir = new Date().getTime();
+
+		// -- create data dir if not exist
+		if (!fs.existsSync('./data/')){ fs.mkdirSync('./data/'); }
+
 		this.dirPath = './data/' + tmpDir
 		if (!fs.existsSync(this.dirPath)){ fs.mkdirSync(this.dirPath); }
 		for(var i=0;i<imgs.length;i++){
