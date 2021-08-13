@@ -1,4 +1,4 @@
-var { ipcMain } = require('electron');
+const { ipcMain } = require('electron');
 
 class APPManager {
 	constructor(mainWindow){

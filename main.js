@@ -1,9 +1,9 @@
-var { BrowserWindow, app } 	= require('electron');
-var path 					= require('path');
-var url 					= require('url');
-var APPManager 		= require('./js/main/appmanager.js');
-var ExportFile 		= require('./js/main/export.js');
-var ENUMS 				= require('./js/render/core/enums.js');
+const { BrowserWindow, app } 	= require('electron');
+const path 					= require('path');
+const url 					= require('url');
+const APPManager 		= require('./js/main/appmanager.js');
+const ExportFile 		= require('./js/main/export.js');
+const ENUMS 				= require('./js/render/core/enums.js');
 
 var MainApp = function(){
 	this.mainWindow = null;
@@ -37,7 +37,11 @@ MainApp.prototype = {
 			darkTheme 			: true,
 			backgroundColor : '#333',
 			icon 						: __dirname + '/icon.png',
-			webPreferences	: { nodeIntegration : true }
+      webPreferences	: {
+        nodeIntegration : true,
+        contextIsolation : false,
+        enableRemoteModule : true
+      }
 		});
 		
 		this.mainWindow.setMenu(null);
@@ -49,7 +53,7 @@ MainApp.prototype = {
 			protocol: 'file:',
 			slashes: true
 		}));
-		// this.mainWindow.webContents.openDevTools();
+    // this.mainWindow.webContents.openDevTools();
 
 		this.mainWindow.on('closed', function(){
 			this.mainWindow = null
