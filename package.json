@@ -20,7 +20,7 @@
   "author": "cHLeB@",
   "license": "",
   "devDependencies": {
-    "electron": "^13.1.9",
+    "electron": "^15.5.5",
     "electron-builder": "^21.2.0"
   },
   "dependencies": {
