@@ -24,7 +24,7 @@
     "electron-builder": "^21.2.0"
   },
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "gifshot": "^0.4.5",
     "mkdirp": "^0.5.1",
     "request": "^2.81.0",
