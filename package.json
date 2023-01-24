@@ -20,8 +20,8 @@
   "author": "cHLeB@",
   "license": "",
   "devDependencies": {
-    "electron": "^13.1.9",
-    "electron-builder": "^21.2.0"
+    "electron": "^22.0.3",
+    "electron-builder": "^23.6.0"
   },
   "dependencies": {
     "express": "^4.15.2",
